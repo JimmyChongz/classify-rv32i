@@ -25,12 +25,30 @@ argmax:
     li t6, 1
     blt a1, t6, handle_error
 
-    lw t0, 0(a0)
+    lw t0, 0(a0) # current max value of the array
 
-    li t1, 0
-    li t2, 1
+    li t1, 0 # Set initial max index to 0
+    li t2, 1 # Initialize loop index (start from second element)
+
 loop_start:
-    # TODO: Add your own implementation
+    bge t2, a1, end
+    slli t3, t2, 2 
+    add t3, t3, a0
+    lw t4, 0(t3)
+    bge t4, t0, update_max
+    j skip_update
+
+update_max:
+    mv t0, t4
+    mv t1, t2
+
+skip_update:
+    addi t2, t2, 1
+    j loop_start
+
+end:
+    mv a0, t1
+    jr ra
 
 handle_error:
     li a0, 36

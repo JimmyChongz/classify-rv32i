@@ -25,10 +25,25 @@
 relu:
     li t0, 1             
     blt a1, t0, error     
-    li t1, 0             
+    li t1, 0 # initialize loop index            
 
 loop_start:
-    # TODO: Add your own implementation
+    bge t1, a1, end
+    slli t2, t1, 2
+    add t2, t2, a0
+    lw t3, 0(t2)
+    blt t3, zero, modifie
+    j skip_modifie
+
+modifie:
+    sw zero, 0(t2)
+
+skip_modifie:
+    addi t1, t1, 1
+    j loop_start
+
+end:
+    jr ra
 
 error:
     li a0, 36          
