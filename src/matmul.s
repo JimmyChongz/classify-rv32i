@@ -104,18 +104,40 @@ inner_loop_start:
     lw a5, 20(sp)
     addi sp, sp, 24
     
+    # Store the result of dot
     sw t0, 0(s2) # position of result matrix
-    addi s2, s2, 4 # Incrememtning pointer for result matrix
+    addi s2, s2, 4 # Increamenting pointer for result matrix
     
+
     li t1, 4
-    add s4, s4, t1 # incrememtning the column on Matrix B
+    add s4, s4, t1 # Incrementing the column on Matrix B
     
     addi s1, s1, 1
     j inner_loop_start
     
 inner_loop_end:
-    # TODO: Add your own implementation
-    add a1, a1, a4
+    li t0, 1
+    slli t0, t0, 2
+
+    # mul t0, t0, a2
+    addi sp, sp, -20
+    sw ra, 0(sp)
+    sw t0, 4(sp)
+    sw t1, 8(sp)
+    sw t2, 12(sp)
+    sw a1, 16(sp)
+    mv a0, t0
+    mv a1, a2
+    jal multiply
+    lw ra, 0(sp)
+    lw t0, 4(sp)
+    lw t1, 8(sp)
+    lw t2, 12(sp)
+    lw a1, 16(sp)
+    addi sp, sp, 20
+    mv t0, a0
+
+    add s3, s3, t0
     addi s0, s0, 1
     j outer_loop_start
 
@@ -133,3 +155,24 @@ outer_loop_end:
 error:
     li a0, 38
     j exit
+
+
+multiply:
+    li t0, 0
+    mv t1, a0
+    mv t2, a1
+
+mul_loop:
+    beqz t2, done
+    andi t3, t2, 1
+    beqz t3, skip
+    add t0, t0, t1
+
+skip:
+    slli t1, t1, 1
+    srli t2, t2, 1
+    j mul_loop
+
+done:
+    mv a0, t0
+    jr ra

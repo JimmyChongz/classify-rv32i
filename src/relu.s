@@ -32,10 +32,10 @@ loop_start:
     slli t2, t1, 2
     add t2, t2, a0
     lw t3, 0(t2)
-    blt t3, zero, modifie
+    blt t3, zero, modify
     j skip_modifie
 
-modifie:
+modify:
     sw zero, 0(t2)
 
 skip_modifie:
