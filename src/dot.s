@@ -37,7 +37,8 @@ dot:
 loop_start:
     bge t1, a2, loop_end
     # TODO: Add your own implementation
-    # mul t2, t1, a3
+# mul t2, t1, a3
+# =========== mul start =============
     mv t3, t1
     mv t4, a3
     li t2, 0
@@ -54,12 +55,14 @@ skipA:
     j mul_loopA
 
 doneA:
+# ============ mul end ==============
     slli t2, t2, 2
-    add t2, a0, t2
-    lw t3, 0(t2)
+    add t2, a0, t2 # caculate the address of current value in arr1
+    lw t3, 0(t2) # t3 -> current value in arr1
     beqz t3, next_round
 
-    # mul t2, t1, a4
+# mul t2, t1, a4
+# =========== mul start =============
     mv t5, t1
     mv t4, a4
     li t2, 0
@@ -76,12 +79,14 @@ skipB:
     j mul_loopB
 
 doneB:
+# ============ mul end ==============
     slli t2, t2, 2
     add t2, a1, t2
     lw t4, 0(t2)
     beqz t4, next_round
  
-    # mul t2, t3, t4
+# mul t2, t3, t4
+# =========== mul start =============
     li t2, 0
 
 mul_loopC:
@@ -96,10 +101,12 @@ skipC:
     j mul_loopC
 
 doneC:
-    add t0, t0, t2
+# ============ mul end ==============
+
+    add t0, t0, t2 # accumulate result of dot product
 
 next_round:
-    addi t1, t1, 1
+    addi t1, t1, 1 # update loop counter
     j loop_start
 
 loop_end:

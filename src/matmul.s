@@ -60,7 +60,7 @@ matmul:
     
 outer_loop_start:
     # s0 is going to be the loop counter for the rows in A
-    li s1, 0
+    li s1, 0 # init inner loop counter
     mv s4, a3 # s4 -> M1 memeory address
     blt s0, a1, inner_loop_start 
 
@@ -108,6 +108,7 @@ inner_loop_start:
     sw t0, 0(s2) # position of result matrix
     addi s2, s2, 4 # Increamenting pointer for result matrix
 
+    # Move the pointer to the next column in M1
     li t1, 4
     add s4, s4, t1 # Incrementing the column on Matrix B
     
@@ -115,9 +116,12 @@ inner_loop_start:
     j inner_loop_start
     
 inner_loop_end:
+    # Move the pointer to the next row in M0
     li t0, 1
     slli t0, t0, 2
-    # mul t1, t0, a2
+
+# mul t1, t0, a2
+# ========================
     mv t2, a2
     li t1, 0
 
@@ -133,8 +137,10 @@ skip:
     j mul_loop
 
 done:
-    add s3, s3, t1
-    addi s0, s0, 1
+# ========================
+    add s3, s3, t1 # t1 -> offset of next row, s3 -> pointer for matrix A
+
+    addi s0, s0, 1 # update outer loop counter
     j outer_loop_start
 
 outer_loop_end:
