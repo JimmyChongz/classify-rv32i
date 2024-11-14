@@ -1,4 +1,5 @@
 .globl read_matrix
+.import multiply.s
 
 .text
 # ==============================================================================
@@ -75,20 +76,34 @@ read_matrix:
     sw t2, 0(s4)     # saves num cols
 
     # mul s1, t1, t2   # s1 is number of elements
-    li s1, 0
+    addi sp, sp, -36
+    sw ra, 0(sp)
+    sw t0, 4(sp)
+    sw t1, 8(sp)
+    sw t2, 12(sp)
+    sw a0, 16(sp)
+    sw a1, 20(sp)
+    sw a2, 24(sp)
+    sw a3, 28(sp)
+    sw a4, 32(sp)
 
-mul_loop:
-    beqz t2, done
-    andi t3, t2, 1
-    beqz t3, skip
-    add s1, s1, t1
+    mv a0, t1
+    mv a1, t2
+    jal multiply
+    mv s1, a0
 
-skip:
-    slli t1, t1, 1
-    srli t2, t2, 1
-    j mul_loop
+    lw ra, 0(sp)
+    lw t0, 4(sp)
+    lw t1, 8(sp)
+    lw t2, 12(sp)
+    lw a0, 16(sp)
+    lw a1, 20(sp)
+    lw a2, 24(sp)
+    lw a3, 28(sp)
+    lw a4, 32(sp)
+    addi sp, sp, 36
 
-done:
+
     slli t3, s1, 2
     sw t3, 24(sp)    # size in bytes
 

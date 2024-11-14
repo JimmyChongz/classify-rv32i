@@ -1,5 +1,5 @@
 .globl dot
-
+.import multiply.s
 .text
 # =======================================================
 # FUNCTION: Strided Dot Product Calculator
@@ -39,22 +39,30 @@ loop_start:
     # TODO: Add your own implementation
 # mul t2, t1, a3
 # =========== mul start =============
-    mv t3, t1
-    mv t4, a3
-    li t2, 0
+    addi sp, sp, -32
+    sw ra, 0(sp)
+    sw t0, 4(sp)
+    sw t1, 8(sp)
+    sw a0, 12(sp)
+    sw a1, 16(sp)
+    sw a2, 20(sp)
+    sw a3, 24(sp)
+    sw a4, 28(sp)
 
-mul_loopA:
-    beqz t4, doneA
-    andi t5, t4, 1
-    beqz t5, skipA
-    add t2, t2, t3
+    mv a0, t1
+    mv a1, a3
+    jal multiply
+    mv t2, a0
 
-skipA:
-    slli t3, t3, 1
-    srli t4, t4, 1
-    j mul_loopA
-
-doneA:
+    lw ra, 0(sp)
+    lw t0, 4(sp)
+    lw t1, 8(sp)
+    lw a0, 12(sp)
+    lw a1, 16(sp)
+    lw a2, 20(sp)
+    lw a3, 24(sp)
+    lw a4, 28(sp)
+    addi sp, sp, 32
 # ============ mul end ==============
     slli t2, t2, 2
     add t2, a0, t2 # caculate the address of current value in arr1
@@ -63,22 +71,32 @@ doneA:
 
 # mul t2, t1, a4
 # =========== mul start =============
-    mv t5, t1
-    mv t4, a4
-    li t2, 0
+addi sp, sp, -36
+    sw ra, 0(sp)
+    sw t0, 4(sp)
+    sw t1, 8(sp)
+    sw a0, 12(sp)
+    sw a1, 16(sp)
+    sw a2, 20(sp)
+    sw a3, 24(sp)
+    sw a4, 28(sp)
+    sw t3, 32(sp)
 
-mul_loopB:
-    beqz t4, doneB
-    andi t6, t4, 1
-    beqz t6, skipB
-    add t2, t2, t5
+    mv a0, t1
+    mv a1, a4
+    jal multiply
+    mv t2, a0
 
-skipB:
-    slli t5, t5, 1
-    srli t4, t4, 1
-    j mul_loopB
-
-doneB:
+    lw ra, 0(sp)
+    lw t0, 4(sp)
+    lw t1, 8(sp)
+    lw a0, 12(sp)
+    lw a1, 16(sp)
+    lw a2, 20(sp)
+    lw a3, 24(sp)
+    lw a4, 28(sp)
+    lw t3, 32(sp)
+    addi sp, sp, 36
 # ============ mul end ==============
     slli t2, t2, 2
     add t2, a1, t2
@@ -87,20 +105,30 @@ doneB:
  
 # mul t2, t3, t4
 # =========== mul start =============
-    li t2, 0
+addi sp, sp, -32
+    sw ra, 0(sp)
+    sw t0, 4(sp)
+    sw t1, 8(sp)
+    sw a0, 12(sp)
+    sw a1, 16(sp)
+    sw a2, 20(sp)
+    sw a3, 24(sp)
+    sw a4, 28(sp)
 
-mul_loopC:
-    beqz t4, doneC
-    andi t5, t4, 1
-    beqz t5, skipC
-    add t2, t2, t3
+    mv a0, t3
+    mv a1, t4
+    jal multiply
+    mv t2, a0
 
-skipC:
-    slli t3, t3, 1
-    srli t4, t4, 1
-    j mul_loopC
-
-doneC:
+    lw ra, 0(sp)
+    lw t0, 4(sp)
+    lw t1, 8(sp)
+    lw a0, 12(sp)
+    lw a1, 16(sp)
+    lw a2, 20(sp)
+    lw a3, 24(sp)
+    lw a4, 28(sp)
+    addi sp, sp, 32
 # ============ mul end ==============
 
     add t0, t0, t2 # accumulate result of dot product

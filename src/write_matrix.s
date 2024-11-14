@@ -1,4 +1,5 @@
 .globl write_matrix
+.import multiply.s
 
 .text
 # ==============================================================================
@@ -62,20 +63,27 @@ write_matrix:
     bne a0, t0, fwrite_error
 
     # mul s4, s2, s3   # s4 = total elements
-    li s4, 0
+    addi sp, sp, -24
+    sw ra, 0(sp)
+    sw t0, 4(sp)
+    sw a0, 8(sp)
+    sw a1, 12(sp)
+    sw a2, 16(sp)
+    sw a3, 20(sp)
 
-mul_loop:
-    beqz s3, done
-    andi t1, s3, 1
-    beqz t1, skip
-    add s4, s4, s2
+    mv a0, s2
+    mv a1, s3
+    jal multiply
+    mv s4, a0
 
-skip:
-    slli s2, s2, 1
-    srli s3, s3, 1
-    j mul_loop
+    lw ra, 0(sp)
+    lw t0, 4(sp)
+    lw a0, 8(sp)
+    lw a1, 12(sp)
+    lw a2, 16(sp)
+    lw a3, 20(sp)
+    addi sp, sp, 24
 
-done:
     # write matrix data to file
     mv a0, s0
     mv a1, s1        # matrix data pointer

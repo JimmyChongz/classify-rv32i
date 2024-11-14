@@ -166,21 +166,23 @@ classify:
     
     lw t0, 0(s3)
     lw t1, 0(s8)
-    # mul a0, t0, t1 
-    li a0, 0
+# mul a0, t0, t1 
+# =========================
+    addi sp, sp, -12
+    sw ra, 0(sp)
+    sw t0, 4(sp)
+    sw t1, 8(sp)
 
-mul_loopA:
-    beqz t1, doneA
-    andi t2, t1, 1
-    beqz t2, skipA
-    add a0, a0, t0
+    mv a0, t0
+    mv a1, t1
+    jal multiply
+    mv a0, a0
 
-skipA:
-    slli t0, t0, 1
-    srli t1, t1, 1
-    j mul_loopA
-
-doneA:
+    lw ra, 0(sp)
+    lw t0, 4(sp)
+    lw t1, 8(sp)
+    addi sp, sp, 12
+# =========================
     slli a0, a0, 2
     jal malloc 
     beq a0, x0, error_malloc
@@ -217,21 +219,25 @@ doneA:
     mv a0, s9 # move h to the first argument
     lw t0, 0(s3)
     lw t1, 0(s8)
-    # mul a1, t0, t1 # length of h array and set it as second argument
-    li a1, 0
+# mul a1, t0, t1 # length of h array and set it as second argument
+# =========================
+    addi sp, sp, -16
+    sw ra, 0(sp)
+    sw t0, 4(sp)
+    sw t1, 8(sp)
+    sw a0, 12(sp)
 
-mul_loopB:
-    beqz t1, doneB
-    andi t2, t1, 1
-    beqz t2, skipB
-    add a1, a1, t0
+    mv a0, t0
+    mv a1, t1
+    jal multiply
+    mv a1, a0
 
-skipB:
-    slli t0, t0, 1
-    srli t1, t1, 1
-    j mul_loopB
-
-doneB:
+    lw ra, 0(sp)
+    lw t0, 4(sp)
+    lw t1, 8(sp)
+    lw a0, 12(sp)
+    addi sp, sp, 16
+# =========================
     jal relu
     
     lw a0, 0(sp)
@@ -253,21 +259,23 @@ doneB:
     lw t0, 0(s3)
     lw t1, 0(s6)
 
-    # mul a0, t0, t1 
-    li a0, 0
+# mul a0, t0, t1 
+# =========================
+    addi sp, sp, -12
+    sw ra, 0(sp)
+    sw t0, 4(sp)
+    sw t1, 8(sp)
 
-mul_loopC:
-    beqz t1, doneC
-    andi t2, t1, 1
-    beqz t2, skipC
-    add a0, a0, t0
+    mv a0, t0
+    mv a1, t1
+    jal multiply
+    mv a0, a0
 
-skipC:
-    slli t0, t0, 1
-    srli t1, t1, 1
-    j mul_loopC
-
-doneC:
+    lw ra, 0(sp)
+    lw t0, 4(sp)
+    lw t1, 8(sp)
+    addi sp, sp, 12
+# =========================
     slli a0, a0, 2
     jal malloc 
     beq a0, x0, error_malloc
@@ -327,21 +335,26 @@ doneC:
     mv a0, s10 # load o array into first arg
     lw t0, 0(s3)
     lw t1, 0(s6)
-    # mul a1, t0, t1 # load length of array into second arg
-    li a1, 0
+# mul a1, t0, t1 # load length of array into second arg
+# =========================
+    addi sp, sp, -16
+    sw ra, 0(sp)
+    sw t0, 4(sp)
+    sw t1, 8(sp)
+    sw a0, 12(sp)
 
-mul_loopD:
-    beqz t1, doneD
-    andi t2, t1, 1
-    beqz t2, skipD
-    add a1, a1, t0
+    mv a0, t0
+    mv a1, t1
+    jal multiply
+    mv a1, a0
 
-skipD:
-    slli t0, t0, 1
-    srli t1, t1, 1
-    j mul_loopD
+    lw ra, 0(sp)
+    lw t0, 4(sp)
+    lw t1, 8(sp)
+    lw a0, 12(sp)
+    addi sp, sp, 16
+# =========================
 
-doneD:
     jal argmax
     
     mv t0, a0 # move return value of argmax into t0

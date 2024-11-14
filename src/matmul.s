@@ -122,21 +122,30 @@ inner_loop_end:
 
 # mul t1, t0, a2
 # ========================
-    mv t2, a2
-    li t1, 0
+    addi sp, sp, -32
+    sw ra, 0(sp)
+    sw t0, 4(sp)
+    sw a0, 8(sp)
+    sw a1, 12(sp)
+    sw a2, 16(sp)
+    sw a3, 20(sp)
+    sw a4, 24(sp)
+    sw a5, 28(sp)
 
-mul_loop:
-    beqz t2, done
-    andi t3, t2, 1
-    beqz t3, skip
-    add t1, t1, t0
+    mv a0, t0
+    mv a1, a2
+    jal multiply
+    mv t1, a0
 
-skip:
-    slli t0, t0, 1
-    srli t2, t2, 1
-    j mul_loop
-
-done:
+    lw ra, 0(sp)
+    lw t0, 4(sp)
+    lw a0, 8(sp)
+    lw a1, 12(sp)
+    lw a2, 16(sp)
+    lw a3, 20(sp)
+    lw a4, 24(sp)
+    lw a5, 28(sp)
+    addi sp, sp, 32
 # ========================
     add s3, s3, t1 # t1 -> offset of next row, s3 -> pointer for matrix A
 
