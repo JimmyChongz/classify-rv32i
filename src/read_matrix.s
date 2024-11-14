@@ -89,8 +89,6 @@ skip:
     j mul_loop
 
 done:
-    # FIXME: Replace 'mul' with your own implementation
-
     slli t3, s1, 2
     sw t3, 24(sp)    # size in bytes
 

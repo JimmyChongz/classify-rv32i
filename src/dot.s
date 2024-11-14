@@ -31,107 +31,79 @@ dot:
     blt a3, t0, error_terminate   
     blt a4, t0, error_terminate  
 
-    addi sp, sp, -24
-    sw ra, 0(sp)
-    sw s0, 4(sp)
-    sw s1, 8(sp)
-    sw s2, 12(sp)
-    sw s3, 16(sp)
-    sw s4, 20(sp)
-
-    mv s0, a0
-    mv s1, a1
-    mv s2, a2
-    mv s3, a3
-    mv s4, a4
-
-    li t0, 0 # Resulting dot product value
-    li t1, 0 # initialize loop index
+    li t0, 0 # result of product
+    li t1, 0 # loop count
 
 loop_start:
-    bge t1, s2, loop_end    # End loop if index >= element count
+    bge t1, a2, loop_end
+    # TODO: Add your own implementation
+    # mul t2, t1, a3
+    mv t3, t1
+    mv t4, a3
+    li t2, 0
 
-    # Calculate offset for each element based on the stride
-    
-    # mul t2, t1, s3          # Offset for first array = t1 * stride0
-    mv a0, t1
-    mv a1, s3
-    addi sp, sp, -20
-    sw ra, 0(sp)
-    sw t0, 4(sp)
-    sw t1, 8(sp)
-    sw t2, 12(sp)
-    sw t3, 16(sp)
-    jal multiply
-    lw ra, 0(sp)
-    lw t0, 4(sp)
-    lw t1, 8(sp)
-    lw t2, 12(sp)
-    lw t3, 16(sp)
-    addi sp, sp, 20
-    mv t2, a0
+mul_loopA:
+    beqz t4, doneA
+    andi t5, t4, 1
+    beqz t5, skipA
+    add t2, t2, t3
 
-    slli t2, t2, 2          # Scale offset by 4 (int size in bytes)
-    add t3, s0, t2          # t3 = address of arr0[t1 * stride0]
+skipA:
+    slli t3, t3, 1
+    srli t4, t4, 1
+    j mul_loopA
 
-    # mul t4, t1, s4          # Offset for second array = t1 * stride1
-    mv a0, t1
-    mv a1, s4
-    addi sp, sp, -20
-    sw ra, 0(sp)
-    sw t0, 4(sp)
-    sw t1, 8(sp)
-    sw t2, 12(sp)
-    sw t3, 16(sp)
-    jal multiply
-    lw ra, 0(sp)
-    lw t0, 4(sp)
-    lw t1, 8(sp)
-    lw t2, 12(sp)
-    lw t3, 16(sp)
-    addi sp, sp, 20
-    mv t4, a0
+doneA:
+    slli t2, t2, 2
+    add t2, a0, t2
+    lw t3, 0(t2)
+    beqz t3, next_round
 
-    slli t4, t4, 2          # Scale offset by 4 (int size in bytes)
-    add t5, s1, t4          # t5 = address of arr1[t1 * stride1]
+    # mul t2, t1, a4
+    mv t5, t1
+    mv t4, a4
+    li t2, 0
 
-    # Load elements from both arrays
-    lw t6, 0(t3)            # Load arr0[t1 * stride0]
-    lw t2, 0(t5)            # Load arr1[t1 * stride1]
+mul_loopB:
+    beqz t4, doneB
+    andi t6, t4, 1
+    beqz t6, skipB
+    add t2, t2, t5
 
-    # Perform multiplication and add to result
-    # mul t3, t6, t2          # t3 = arr0[t1 * stride0] * arr1[t1 * stride1]
-    mv a0, t6
-    mv a1, t2
-    addi sp, sp, -20
-    sw ra, 0(sp)
-    sw t0, 4(sp)
-    sw t1, 8(sp)
-    sw t2, 12(sp)
-    sw t3, 16(sp)
-    jal multiply
-    lw ra, 0(sp)
-    lw t0, 4(sp)
-    lw t1, 8(sp)
-    lw t2, 12(sp)
-    lw t3, 16(sp)
-    addi sp, sp, 20
-    mv t3, a0
+skipB:
+    slli t5, t5, 1
+    srli t4, t4, 1
+    j mul_loopB
 
-    add t0, t0, t3          # Accumulate the product into the result
+doneB:
+    slli t2, t2, 2
+    add t2, a1, t2
+    lw t4, 0(t2)
+    beqz t4, next_round
+ 
+    # mul t2, t3, t4
+    li t2, 0
 
-    addi t1, t1, 1          # Increment loop index
-    j loop_start            # Jump back to loop start
+mul_loopC:
+    beqz t4, doneC
+    andi t5, t4, 1
+    beqz t5, skipC
+    add t2, t2, t3
+
+skipC:
+    slli t3, t3, 1
+    srli t4, t4, 1
+    j mul_loopC
+
+doneC:
+    add t0, t0, t2
+
+next_round:
+    addi t1, t1, 1
+    j loop_start
 
 loop_end:
     mv a0, t0
-    lw ra, 0(sp)
-    lw s0, 4(sp)
-    lw s1, 8(sp)
-    lw s2, 12(sp)
-    lw s3, 16(sp)
-    lw s4, 20(sp)
-    addi sp, sp, 24
     jr ra
 
 error_terminate:
@@ -142,23 +114,3 @@ error_terminate:
 set_error_36:
     li a0, 36
     j exit
-
-multiply:
-    li t0, 0
-    mv t1, a0
-    mv t2, a1
-
-mul_loop:
-    beqz t2, done
-    andi t3, t2, 1
-    beqz t3, skip
-    add t0, t0, t1
-
-skip:
-    slli t1, t1, 1
-    srli t2, t2, 1
-    j mul_loop
-
-done:
-    mv a0, t0
-    jr ra

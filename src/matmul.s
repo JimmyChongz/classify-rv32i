@@ -59,10 +59,10 @@ matmul:
     mv s4, a3 # incrementing matrix B pointer, increments during inner loop 
     
 outer_loop_start:
-    #s0 is going to be the loop counter for the rows in A
+    # s0 is going to be the loop counter for the rows in A
     li s1, 0
-    mv s4, a3
-    blt s0, a1, inner_loop_start
+    mv s4, a3 # s4 -> M1 memeory address
+    blt s0, a1, inner_loop_start 
 
     j outer_loop_end
     
@@ -107,7 +107,6 @@ inner_loop_start:
     # Store the result of dot
     sw t0, 0(s2) # position of result matrix
     addi s2, s2, 4 # Increamenting pointer for result matrix
-    
 
     li t1, 4
     add s4, s4, t1 # Incrementing the column on Matrix B
@@ -118,26 +117,23 @@ inner_loop_start:
 inner_loop_end:
     li t0, 1
     slli t0, t0, 2
+    # mul t1, t0, a2
+    mv t2, a2
+    li t1, 0
 
-    # mul t0, t0, a2
-    addi sp, sp, -20
-    sw ra, 0(sp)
-    sw t0, 4(sp)
-    sw t1, 8(sp)
-    sw t2, 12(sp)
-    sw a1, 16(sp)
-    mv a0, t0
-    mv a1, a2
-    jal multiply
-    lw ra, 0(sp)
-    lw t0, 4(sp)
-    lw t1, 8(sp)
-    lw t2, 12(sp)
-    lw a1, 16(sp)
-    addi sp, sp, 20
-    mv t0, a0
+mul_loop:
+    beqz t2, done
+    andi t3, t2, 1
+    beqz t3, skip
+    add t1, t1, t0
 
-    add s3, s3, t0
+skip:
+    slli t0, t0, 1
+    srli t2, t2, 1
+    j mul_loop
+
+done:
+    add s3, s3, t1
     addi s0, s0, 1
     j outer_loop_start
 
@@ -155,24 +151,3 @@ outer_loop_end:
 error:
     li a0, 38
     j exit
-
-
-multiply:
-    li t0, 0
-    mv t1, a0
-    mv t2, a1
-
-mul_loop:
-    beqz t2, done
-    andi t3, t2, 1
-    beqz t3, skip
-    add t0, t0, t1
-
-skip:
-    slli t1, t1, 1
-    srli t2, t2, 1
-    j mul_loop
-
-done:
-    mv a0, t0
-    jr ra

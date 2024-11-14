@@ -76,8 +76,6 @@ skip:
     j mul_loop
 
 done:
-    # FIXME: Replace 'mul' with your own implementation
-
     # write matrix data to file
     mv a0, s0
     mv a1, s1        # matrix data pointer

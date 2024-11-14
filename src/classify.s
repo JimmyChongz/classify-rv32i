@@ -166,7 +166,7 @@ classify:
     
     lw t0, 0(s3)
     lw t1, 0(s8)
-    # mul a0, t0, t1 # FIXME: Replace 'mul' with your own implementation
+    # mul a0, t0, t1 
     li a0, 0
 
 mul_loopA:
@@ -232,7 +232,6 @@ skipB:
     j mul_loopB
 
 doneB:
-    # FIXME: Replace 'mul' with your own implementation
     jal relu
     
     lw a0, 0(sp)
@@ -254,7 +253,7 @@ doneB:
     lw t0, 0(s3)
     lw t1, 0(s6)
 
-    # mul a0, t0, t1 # FIXME: Replace 'mul' with your own implementation
+    # mul a0, t0, t1 
     li a0, 0
 
 mul_loopC:
@@ -269,7 +268,6 @@ skipC:
     j mul_loopC
 
 doneC:
-
     slli a0, a0, 2
     jal malloc 
     beq a0, x0, error_malloc
@@ -344,8 +342,6 @@ skipD:
     j mul_loopD
 
 doneD:
-    # FIXME: Replace 'mul' with your own implementation
-    
     jal argmax
     
     mv t0, a0 # move return value of argmax into t0
