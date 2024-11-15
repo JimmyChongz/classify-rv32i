@@ -17,7 +17,7 @@ To access the i<sup>th</sup> element in an array, we calculate the offset as `i 
 
 I am asked to not use M extension instruction, so I should implement multiply function personally. To implement multiplication without using the M extension instruction, I apply the [traditional multiplication](https://mathfoundations.weebly.com/traditional-multiplication.html) in binary. Here’s how it works step by step:
 
-Example for the binary multiplication  1000<sub>2</sub> x 1001<sub>2</sub> = 1001000<sub>2</sub> , follow these steps:
+Example for the binary multiplication  1000<sub>2</sub> x 1001<sub>2</sub> = 1001000<sub>2</sub>, follow these steps:
 
 * Step 1: Check if the Multiplier is Zero
 
@@ -25,7 +25,7 @@ Example for the binary multiplication  1000<sub>2</sub> x 1001<sub>2</sub> = 100
 
 * Step 2: Check the Least Significant Bit (LSB) of the Multiplier
 
-    To determine if the [least significant bit(LSB)](https://en.wikipedia.org/wiki/Bit_numbering#Least_significant_bit) of the multiplier is 1 , perform a bitwise AND operation between the multiplier and 1 aa. 
+    To determine if the [least significant bit(LSB)](https://en.wikipedia.org/wiki/Bit_numbering#Least_significant_bit) of the multiplier is 1, perform a bitwise AND operation between the multiplier and 1. 
 
     For example:
     ```c
@@ -34,8 +34,8 @@ Example for the binary multiplication  1000<sub>2</sub> x 1001<sub>2</sub> = 100
     -----------------
     result       0001
     ```
-    * If the result is 1 , add the multiplicand to the product register.
-	* If the result is 0 , skip the addition.
+	* If the result is 1, add the multiplicand to the product register.
+	* If the result is 0, skip the addition.
 
 
 * Step 3: Update the Multiplicand and Multiplier
