@@ -17,7 +17,7 @@ To access the i^th^ element in an array, we calculate the offset as `i * s` , wh
 
 I am asked to not use M extension instruction, so I should implement multiply function personally. To implement multiplication without using the M extension instruction, I apply the [traditional multiplication](https://mathfoundations.weebly.com/traditional-multiplication.html) in binary. Here’s how it works step by step:
 
-Example for the binary multiplication  1000_2 x 1001_2 = 1001000_2 , follow these steps:
+Example for the binary multiplication  1000<sub>2</sub> x 1001<sub>2</sub> = 1001000<sub>2</sub> , follow these steps:
 
 * Step 1: Check if the Multiplier is Zero
 
