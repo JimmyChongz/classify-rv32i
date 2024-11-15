@@ -56,4 +56,4 @@ Example for the binary multiplication  1000<sub>2</sub> x 1001<sub>2</sub> = 100
       1001000 -> Product
     ```
 
-    After updating, return to ++Step 2++ to continue the process until the multiplier becomes zero.
+    After updating, return to <u>Step 2</u> to continue the process until the multiplier becomes zero.
