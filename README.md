@@ -13,7 +13,7 @@ In this section, there are two input arrays, and we need to calculate the precis
     
 *	Stride = 4: Elements are spaced by four positions (e.g., a[0], a[4], a[8]).
 
-To access the i^th^ element in an array, we calculate the offset as `i * s` , where `s` is the stride of the array. Since processors typically use byte addressing mode and a word is 4 bytes by default, we multiply the offset by 4. This allows us to access the correct value from memory.
+To access the i<sup>th</sup> element in an array, we calculate the offset as `i * s` , where `s` is the stride of the array. Since processors typically use byte addressing mode and a word is 4 bytes by default, we multiply the offset by 4. This allows us to access the correct value from memory.
 
 I am asked to not use M extension instruction, so I should implement multiply function personally. To implement multiplication without using the M extension instruction, I apply the [traditional multiplication](https://mathfoundations.weebly.com/traditional-multiplication.html) in binary. Here’s how it works step by step:
 
