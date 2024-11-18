@@ -15,6 +15,8 @@ In this section, there are two input arrays, and we need to calculate the precis
 
 To access the i<sup>th</sup> element in an array, we calculate the offset as `i * s` , where `s` is the stride of the array. Since processors typically use byte addressing mode and a word is 4 bytes by default, we multiply the offset by 4. This allows us to access the correct value from memory.
 
+##### Implementation of Multiplication
+
 I am asked to not use M extension instruction, so I should implement multiply function personally. To implement multiplication without using the M extension instruction, I apply the [traditional multiplication](https://mathfoundations.weebly.com/traditional-multiplication.html) in binary. Here’s how it works step by step:
 
 Example for the binary multiplication  1000<sub>2</sub> x 1001<sub>2</sub> = 1001000<sub>2</sub>, follow these steps:
@@ -57,3 +59,12 @@ Example for the binary multiplication  1000<sub>2</sub> x 1001<sub>2</sub> = 100
     ```
 
     After updating, return to **Step 2** to continue the process until the multiplier becomes zero.
+
+After loading the correct elements from memory as $a_i$ and $b_i$, we will perform the dot product operation, defined as:
+\begin{split}dot(a, b) = \sum_{i=0}^{n-1}(a_i \cdot b_i)\end{split}Here, $a_i$ and $b_i$ are the corresponding elements of vectors a and b, respectively.
+
+##### problem solving
+
+While implementing RISC-V assembly, I made some mistakes, such as using the wrong destination register, which ended up overwriting parameters needed later.
+
+To resolve this issue, I used a **temporary register** as the destination register, which prevents overwriting parameters needed later.
