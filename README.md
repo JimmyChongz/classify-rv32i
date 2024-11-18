@@ -68,3 +68,15 @@ After loading the correct elements from memory as $a_i$ and $b_i$, we will perfo
 While implementing RISC-V assembly, I made some mistakes, such as using the wrong destination register, which ended up overwriting parameters needed later.
 
 To resolve this issue, I used a **temporary register** as the destination register, which prevents overwriting parameters needed later.
+
+#### Task 3.2: Matrix Multiplication
+##### Matrix Representation
+
+All two-dimensional matrices in this project will be stored as 1D vectors in row-major order. This means the rows of the matrix are concatenated to form a single continuous array. Alternatively, matrices could be stored in column-major order, but in this project, we stick to row-major order.
+
+##### Implementation
+
+To implement matrix multiplication, we use nested loops. The outer loop iterates through the rows of the first matrix, while the inner loop iterates through the columns of the second matrix. For each pair of a row from the first matrix and a column from the second matrix, we compute the dot product of the two. This dot product represents the value of the corresponding element in the resulting matrix.
+
+## Part B: File Operations and Main
+In this part, I only replaced the ‘mul’ function with my own implementation.
