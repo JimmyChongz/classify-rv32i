@@ -61,9 +61,9 @@ Example for the binary multiplication  1000<sub>2</sub> x 1001<sub>2</sub> = 100
     After updating, return to **Step 2** to continue the process until the multiplier becomes zero.
 
 After loading the correct elements from memory as $a_i$ and $b_i$, we will perform the dot product operation, defined as:
-<div align="center">
-<img src="https://latex.codecogs.com/svg.latex?\begin{split}dot(a, b) = \sum_{i=0}^{n-1}(a_i \cdot b_i)\end{split}" alt="Dot product formula" />
-</div>
+```math
+\begin{split}dot(a, b) = \sum_{i=0}^{n-1}(a_i \cdot b_i)\end{split}
+```
 Here, $a_i$ and $b_i$ are the corresponding elements of vectors a and b, respectively.
 
 #### problem solving
