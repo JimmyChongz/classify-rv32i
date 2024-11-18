@@ -1,12 +1,12 @@
 # Assignment 2: Classify
-### Part A Mathematical Functions
-#### Task 1: ReLU
+## Part A Mathematical Functions
+### Task 1: ReLU
 In this part, we need to iterate through the entire input array. For each element in the array that is less than zero, we should change it to zero, ensuring that all elements in the input array are non-negative.
 
-#### Tsak 2: ArgMax
+### Tsak 2: ArgMax
 In this approach, we begin by assuming the first element of the input array is the maximum value. Starting from the second element, we iterate through each element in the array. At each step, we compare the current element with the current maximum value. If the current element is larger, we update the maximum value accordingly. This process continues until we have examined all elements in the array, leaving us with the maximum value of the input array.
 
-#### Task 3.1: Dot Product
+### Task 3.1: Dot Product
 In this section, there are two input arrays, and we need to calculate the precise offset for each element in the arrays. It’s important to also consider the stride of each array. For example:
 
 *	Stride = 1: Elements are stored contiguously (e.g., a[0], a[1], a[2]).
@@ -15,7 +15,7 @@ In this section, there are two input arrays, and we need to calculate the precis
 
 To access the i<sup>th</sup> element in an array, we calculate the offset as `i * s` , where `s` is the stride of the array. Since processors typically use byte addressing mode and a word is 4 bytes by default, we multiply the offset by 4. This allows us to access the correct value from memory.
 
-##### Implementation of Multiplication
+#### Implementation of Multiplication
 
 I am asked to not use M extension instruction, so I should implement multiply function personally. To implement multiplication without using the M extension instruction, I apply the [traditional multiplication](https://mathfoundations.weebly.com/traditional-multiplication.html) in binary. Here’s how it works step by step:
 
@@ -63,18 +63,18 @@ Example for the binary multiplication  1000<sub>2</sub> x 1001<sub>2</sub> = 100
 After loading the correct elements from memory as $a_i$ and $b_i$, we will perform the dot product operation, defined as:
 \begin{split}dot(a, b) = \sum_{i=0}^{n-1}(a_i \cdot b_i)\end{split}Here, $a_i$ and $b_i$ are the corresponding elements of vectors a and b, respectively.
 
-##### problem solving
+#### problem solving
 
 While implementing RISC-V assembly, I made some mistakes, such as using the wrong destination register, which ended up overwriting parameters needed later.
 
 To resolve this issue, I used a **temporary register** as the destination register, which prevents overwriting parameters needed later.
 
-#### Task 3.2: Matrix Multiplication
-##### Matrix Representation
+### Task 3.2: Matrix Multiplication
+#### Matrix Representation
 
 All two-dimensional matrices in this project will be stored as 1D vectors in row-major order. This means the rows of the matrix are concatenated to form a single continuous array. Alternatively, matrices could be stored in column-major order, but in this project, we stick to row-major order.
 
-##### Implementation
+#### Implementation
 
 To implement matrix multiplication, we use nested loops. The outer loop iterates through the rows of the first matrix, while the inner loop iterates through the columns of the second matrix. For each pair of a row from the first matrix and a column from the second matrix, we compute the dot product of the two. This dot product represents the value of the corresponding element in the resulting matrix.
 
