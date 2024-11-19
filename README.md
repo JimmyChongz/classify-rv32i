@@ -1,10 +1,13 @@
 # Assignment 2: Classify
 ## Part A Mathematical Functions
+### Task 0: abs
+In this task, we are going to compute the absolute value of a given integer. The absolute value represents the distance of the number from zero, and it is always non-negative. If the input integer is negative, I calculate its absolute value by subtracting it from zero.
+
 ### Task 1: ReLU
-In this part, we need to iterate through the entire input array. For each element in the array that is less than zero, we should change it to zero, ensuring that all elements in the input array are non-negative.
+In this task, we need to iterate through the entire input array. For each element in the array that is less than zero, we should change it to zero, ensuring that all elements in the input array are non-negative.
 
 ### Tsak 2: ArgMax
-In this approach, we begin by assuming the first element of the input array is the maximum value. Starting from the second element, we iterate through each element in the array. At each step, we compare the current element with the current maximum value. If the current element is larger, we update the maximum value accordingly. This process continues until we have examined all elements in the array, leaving us with the maximum value of the input array.
+In this task, we begin by assuming the first element of the input array is the maximum value. Starting from the second element, we iterate through each element in the array. At each step, we compare the current element with the current maximum value. If the current element is larger, we update the maximum value accordingly. This process continues until we have examined all elements in the array, leaving us with the maximum value of the input array.
 
 ### Task 3.1: Dot Product
 In this section, there are two input arrays, and we need to calculate the precise offset for each element in the arrays. It’s important to also consider the stride of each array. For example:
@@ -13,7 +16,7 @@ In this section, there are two input arrays, and we need to calculate the precis
     
 *	Stride = 4: Elements are spaced by four positions (e.g., a[0], a[4], a[8]).
 
-To access the i<sup>th</sup> element in an array, we calculate the offset as `i * s` , where `s` is the stride of the array. Since processors typically use byte addressing mode and a word is 4 bytes by default, we multiply the offset by 4. This allows us to access the correct value from memory.
+To access the i<sup>th</sup> element in an array, we calculate the offset as `i * s` , where `s` is the stride of the array. Since processors typically use byte addressing mode and a word is 4 bytes by default, we multiply the offset by 4. This allows us to access the correct element from memory.
 
 #### Implementation of Multiplication
 
@@ -23,11 +26,11 @@ Example for the binary multiplication  1000<sub>2</sub> x 1001<sub>2</sub> = 100
 
 * Step 1: Check if the Multiplier is Zero
 
-    If the multiplier is zero, the product is zero, and the computation is complete. Otherwise, proceed to Step 2.
+    If the multiplier is zero, the product is zero, and the computation is complete. Otherwise, proceed to **Step 2**.
 
 * Step 2: Check the Least Significant Bit (LSB) of the Multiplier
 
-    To determine if the [least significant bit(LSB)](https://en.wikipedia.org/wiki/Bit_numbering#Least_significant_bit) of the multiplier is 1, perform a bitwise AND operation between the multiplier and 1. 
+    To determine if the [least significant bit(LSB)](https://en.wikipedia.org/wiki/Bit_numbering#Least_significant_bit) of the multiplier is 1, perform a bitwise `AND` operation between the multiplier and 1. 
 
     For example:
     ```c
@@ -82,4 +85,4 @@ All two-dimensional matrices in this project will be stored as 1D vectors in row
 To implement matrix multiplication, we use nested loops. The outer loop iterates through the rows of the first matrix, while the inner loop iterates through the columns of the second matrix. For each pair of a row from the first matrix and a column from the second matrix, we compute the dot product of the two. This dot product represents the value of the corresponding element in the resulting matrix.
 
 ## Part B: File Operations and Main
-In this part, I only replaced the ‘mul’ function with my own implementation.
+In this part, a large number of mul instructions are used. To optimize this, I implemented a `multiply.s` file as an external function. Before calling the `multiply` function, the required parameter values are stored on the stack using the `sw` instruction. After the function call, the `lw` instruction is used to load the results back from the stack. This implementation has been completed on the `feature branch`. However, this approach introduces additional execution overhead due to the frequent use of lw/sw instructions for parameter passing and result retrieval. To further optimize, it might be possible to minimize stack operations by using registers more effectively or adopting an inline assembly approach to reduce the function call overhead.
